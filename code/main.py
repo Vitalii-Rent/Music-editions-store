@@ -14,7 +14,7 @@ class Interface:
     def ans_int(prompt: str = " "):
         while True:
             try:
-                ans = int(input(prompt))
+                ans = float(input(prompt))
                 return ans
             except TypeError and ValueError:
                 print("Incorrect data type input ")
@@ -372,7 +372,8 @@ class Interface:
                     self.view_par()
                 case 7:
                     self.user.role = None
-                    self.db.log_out(self.user.id)
+                    if self.user.id:
+                        self.db.log_out(self.user.id)
                     break
                 case 8:
                     self.start(True)
@@ -436,7 +437,7 @@ class Interface:
         while True:
             login = input("Enter login ")
             self.user.login = login
-            password = input("Enter password ")
+            self.user.password = input("Enter password ")
             # self.user.password = password
             while True:
                 ans = self.ans_int("Enter your role(1 - seller, 2 - buyer) ")
@@ -469,13 +470,15 @@ class Interface:
                         continue
                     case 2:
                         return
-            print(self.user.role)
+            # print(self.user.role)
             match self.user.role:
                 case 1 | 2:
                     self.user_menu()
+                    # self.user.is_online = True
                     return
                 case 3:
                     self.admin_menu()
+                    # self.user.is_online = True
                     return
                 case _:
                     print("User type undefined error ")
@@ -495,7 +498,10 @@ class Interface:
                 case 3:
                     self.guest_menu()
                 case 4:
-                    if self.user.id: self.db.log_out(self.user.id)
+                    try:
+                        if self.user.id is not None: self.db.log_out(self.user.id)
+                    except AttributeError:
+                        pass
                     exit()
 
 
@@ -505,5 +511,6 @@ class Interface:
 
 if __name__ == '__main__':
     interface = Interface()
+    # print(interface.user.is_online)
     # interface.test(2)
     interface.start()

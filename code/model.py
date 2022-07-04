@@ -1,8 +1,8 @@
 class User:
-    id: int
+    id: int = None
     login: str
     password: str
-    is_online: bool
+    is_online: bool = False
     rating = 0
     role: int  # 1- seller, 2- buyer, 3- admin
 
